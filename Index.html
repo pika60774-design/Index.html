@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snapcard — Happy Anniversary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Dark Romance Background Gradient */
+            background: linear-gradient(-45deg, #0d0408, #1c0612, #2d081a, #0a0206);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #e2b6c3;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Continuous Floating Hearts Overlay */
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: #ff2a5f;
+            font-size: 18px;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 6px rgba(255, 42, 95, 0.8));
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* App Main Container - Dark Glassmorphism */
+        .app-card {
+            background: rgba(18, 7, 14, 0.85);
+            backdrop-filter: blur(15px);
+            width: 100%;
+            max-width: 390px;
+            height: 760px;
+            border-radius: 36px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(201, 24, 74, 0.25);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 77, 109, 0.25);
+            z-index: 10;
+        }
+
+        /* Top Progress Dots */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 22px 0 10px;
+            z-index: 20;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            background-color: #3a1523;
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .dot.active {
+            background-color: #ff2a5f;
+            width: 24px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(255, 42, 95, 0.8);
+        }
+
+        /* Music Toggle Button */
+        .music-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 30;
+            background: rgba(35, 12, 24, 0.8);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            color: #ffccd5;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .music-toggle:hover {
+            transform: scale(1.1);
+            background: #ff2a5f;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 42, 95, 0.6);
+        }
+
+        /* Slide Transition Animations */
+        .slide {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px 24px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .slide.active > * {
+            animation: fadeInStagger 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        .slide.active > *:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active > *:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active > *:nth-child(3) { animation-delay: 0.3s; }
+        .slide.active > *:nth-child(4) { animation-delay: 0.4s; }
+        .slide.active > *:nth-child(5) { animation-delay: 0.5s; }
+        .slide.active > *:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes fadeInStagger {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fonts & Dark Romance UI elements */
+        .sub-header {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #ff4d6d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-shadow: 0 0 8px rgba(255, 77, 109, 0.4);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+        }
+
+        .font-handwriting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.3rem;
+            color: #ff758f;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 117, 143, 0.4);
+        }
+
+        .avatar-box {
+            width: 125px;
+            height: 125px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2b0c1b, #15050d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 42, 95, 0.3);
+            margin: 15px 0 20px;
+            font-size: 60px;
+            border: 1px solid rgba(255, 77, 109, 0.4);
+            animation: pulse 3s infinite ease-in-out;
+            position: relative;
+        }
+
+        .avatar-box::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(255, 42, 95, 0.5);
+            z-index: -1;
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.15); }
+        }
+
+        /* Velvet Wine Buttons */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #a4133c, #590d22);
+            color: #ffffff;
+            border: 1px solid rgba(255, 186, 8, 0.3);
+            padding: 16px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(164, 19, 60, 0.4);
+            margin-top: auto;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 12px 25px rgba(255, 42, 95, 0.6);
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #c9184a, #800020);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96) translateY(0);
+        }
+
+        /* Dark Card Styling */
+        .white-card {
+            background: rgba(28, 12, 22, 0.9);
+            border-radius: 24px;
+            padding: 22px 16px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 77, 109, 0.2);
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .timer-box {
+            border: 1px solid rgba(255, 77, 109, 0.2);
+            border-radius: 14px;
+            padding: 10px 4px;
+            background: linear-gradient(to bottom, #1f0a17, #12040d);
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+            transition: transform 0.2s ease;
+        }
+
+        .timer-box:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .timer-num {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .timer-label {
+            font-size: 0.6rem;
+            color: #b08a96;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Story & Letter Styles */
+        .story-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d8b4c0;
+            margin: 15px 0 25px;
+            text-align: justify;
+        }
+
+        .letter-box {
+            background: rgba(24, 9, 18, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #ffccd5;
+            text-align: left;
+            border: 1px solid rgba(255, 77, 109, 0.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        /* Dark Aesthetic Cake Section */
+        .cake {
+            width: 180px;
+            margin: 30px 0;
+            position: relative;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.6));
+        }
+        .layer {
+            height: 35px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: inset 0 -4px 8px rgba(0,0,0,0.4);
+        }
+        .l1 { background: #590d22; color: #ffccd5; border: 1px solid rgba(255,77,109,0.3); }
+        .l2 { background: #800020; color: #ffd700; border: 1px solid rgba(255,215,0,0.3); }
+        .l3 { background: #2b0918; color: #ff758f; border: 1px solid rgba(255,117,143,0.3); }
+        
+        .candle {
+            width: 16px;
+            height: 35px;
+            background: repeating-linear-gradient(45deg, #a4133c, #a4133c 5px, #590d22 5px, #590d22 10px);
+            margin: 0 auto -2px;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .flame {
+            width: 16px;
+            height: 22px;
+            background: #ffd700;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -20px;
+            box-shadow: 0 0 15px #ff4500, 0 0 25px #ffd700, 0 0 35px #ff0000;
+            animation: flicker 0.4s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-1deg); }
+            50% { transform: scale(1.1) rotate(1deg); }
+            100% { transform: scale(0.95) rotate(-2deg); }
+        }
+
+        /* Confetti Canvas */
+        #confettiCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Music Audio Tag -->
+    <audio id="bgMusic" loop>
+        <source src="https://cs1.mp3.pm/download/250394763/QXliMzVBSWZqS2tkcDZkTHZjdVNFOCt3R2RhbWNqTlB3WkZaYTdPd0ZnZHJMd3VERlFnV1hUcVJxWUtlWjMyY2JiZFRxL05sY29ncm9UcXQwMzFBeGNuNEFxWThjTjk1VWhJVUZFNEp0OHUxRVJQdkR0aUFuNThibTRVTzJtUVo/Ella_Bright_-_Baby_Now_That_I_Found_You_(mp3.pm).mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Continuous Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="app-card" id="appCard">
+        
+        <!-- Music Toggle Button -->
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</button>
+
+        <!-- Confetti Canvas -->
+        <canvas id="confettiCanvas"></canvas>
+
+        <!-- Dots Progress -->
+        <div class="progress-dots" id="dotsContainer"></div>
+
+        <!-- SLIDE 1: WELCOME SCREEN -->
+        <div class="slide active">
+            <div class="sub-header">One Year Ago, Everything Changed ♥</div>
+            <div class="avatar-box">🧸</div>
+            <h1 class="main-title">Happy First Anniversary</h1>
+            <div class="font-handwriting">NEHA PARMAR 💕</div>
+            <p style="font-size: 0.8rem; color: #b08a96; margin: 10px 0 30px;">From Prashant yadav with all my love 💛</p>
+            <button class="btn-primary" onclick="nextSlide()">Open our love story ✉️</button>
+        </div>
+
+        <!-- SLIDE 2: REAL LIVE TIMER SCREEN -->
+        <div class="slide">
+            <div class="white-card">
+                <div style="font-size: 32px; margin-bottom: 5px;">⏱️</div>
+                <h2 class="main-title" style="font-size: 1.4rem;">Every Second With You</h2>
+                <div style="font-size: 0.75rem; color: #ff758f; margin-bottom: 10px;">Since 30th July 2025...</div>
+                
+                <div class="timer-grid">
+                    <div class="timer-box"><div class="timer-num" id="t-years">00</div><div class="timer-label">YEARS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-months">00</div><div class="timer-label">MONTHS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-days">00</div><div class="timer-label">DAYS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-hours">00</div><div class="timer-label">HOURS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-minutes">00</div><div class="timer-label">MINUTES</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-seconds">00</div><div class="timer-label">SECONDS</div></div>
+                </div>
+
+                <button class="btn-primary" onclick="nextSlide()">Our Memories →</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: MEMORY 1 -->
+        <div class="slide">
+            <div class="avatar-box">🐻‍❄️</div>
+            <h2 class="main-title">How We Met</h2>
+            <p class="story-text">
+                Looking back, 30-07-2025 felt like a quiet turning point in my life. Distance was always a reality for us, but from our very first conversation, the connection was so instant that the miles completely faded away. Meeting you brought a warmth that changed everything.
+            </p>
+            <button class="btn-primary" onclick="nextSlide()">Next ♥</button>
+        </div>
+
+        <!-- SLIDE 4: MEMORY 2 -->
+        <div class="slide">
+            <div class="avatar-box">🎉</div>
+            <h2 class="main-title">Our Best Moments</h2>
+            <p class="story-text">
+                Every adventure, every laugh, every quiet night — all of it, with you. Our best moments aren't just limited to the rare times we hold hands, but in every late-night call, shared laugh over screen, and countdown we've made together.
+            </p>
+            <button class="btn-primary" onclick="nextSlide()">Next ♥</button>
+        </div>
+
+        <!-- SLIDE 5: MEMORY 3 -->
+        <div class="slide">
+            <div class="avatar-box">💍</div>
+            <h2 class="main-title">What You Mean To Me</h2>
+            <p class="story-text">
+                You are my safe haven, my biggest cheerleader, and my absolute favorite person in the entire world. In a world full of noise, your voice is my favorite comfort, and even thousands of miles away, your love keeps me grounded.
+            </p>
+            <button class="btn-primary" onclick="nextSlide()">Next ♥</button>
+        </div>
+
+        <!-- SLIDE 6: PERSONAL LETTER -->
+        <div class="slide">
+            <div class="avatar-box" style="width:70px; height:70px; font-size:30px; margin: 0 0 10px;">💌</div>
+            <div class="letter-box">
+                My dearest Neha,<br><br>
+                My life got infinitely better the day we met on 30-07-2025. I love you! Happy 1st Anniversary! I still can't believe a whole year has passed since we started this beautiful journey together. Long distance hasn't always been easy, but loving you is the easiest thing I have ever done.
+            </div>
+            <button class="btn-primary" style="margin-top: 15px;" onclick="nextSlide()">Let's Celebrate 🎂</button>
+        </div>
+
+        <!-- SLIDE 7: INTERACTIVE CANDLE BLOWING -->
+        <div class="slide">
+            <h2 class="main-title">Make a wish! ⭐</h2>
+            <div style="font-size: 0.8rem; color: #b08a96;">Tap the flame to blow it out! 🌬️</div>
+            <div id="candleStatus" style="font-size: 0.8rem; color: #ff4d6d; font-weight: 600; margin-top: 5px;">0 of 1 candles blown 🕯️</div>
+
+            <div class="cake">
+                <div class="candle" onclick="blowCandle()">
+                    <div class="flame" id="flame"></div>
+                </div>
+                <div class="layer l1">Happy Anniversary</div>
+                <div class="layer l2">♥ Neha & Prashant ♥</div>
+                <div class="layer l3">1 Year of Love ♥</div>
+            </div>
+
+            <button class="btn-primary" id="cakeBtn" style="opacity: 0.4; pointer-events: none;" onclick="nextSlide()">Continue to our celebration 🎉</button>
+        </div>
+
+        <!-- SLIDE 8: PROMISE -->
+        <div class="slide">
+            <div class="sub-header">OUR PROMISE 🤝</div>
+            <div class="white-card">
+                <h2 class="main-title" style="font-size: 1.3rem;">For Our Next Year</h2>
+                <p class="story-text" style="font-family: 'Dancing Script', cursive; font-size: 1.35rem; font-style: italic; color: #ffccd5; text-align: center;">
+                    I promise to love you more with each passing day, to remain patient through every mile that separates us, and to always choose you—no matter how hard the distance gets.
+                </p>
+                <div style="color: #ffd700; font-weight: 600; font-size: 0.95rem;">Prashant yadav</div>
+            </div>
+            <button class="btn-primary" style="margin-top: 20px;" onclick="nextSlide()">Final Celebration 🥂</button>
+        </div>
+
+          <!-- SLIDE 9: FINAL CELEBRATION -->
+        <div class="slide">
+            <div style="display:flex; gap:10px; margin-bottom:15px; width:100%;">
+                <div class="white-card" style="padding:10px; font-size:0.75rem; color: #ffccd5;">🥂 Cheers to us!</div>
+                <div class="white-card" style="padding:10px; font-size:0.75rem; color: #ffccd5;">🌹 1 year strong!</div>
+            </div>
+
+           <div class="white-card">
+                <h2 class="font-handwriting" style="font-size: 1.8rem;">Happy First Anniversary! 🥂</h2>
+                <div class="sub-header" style="font-size:0.6rem; margin-bottom:10px;">ANOTHER YEAR OF BEAUTIFUL MEMORIES</div>
+                <p style="font-size: 0.78rem; color: #d8b4c0; line-height: 1.5; text-align: center;">
+                    Here's to forever. I love you more than words can say. Here’s to surviving the distance, celebrating one incredible year of love, and looking forward to a lifetime together! 💛
+                </p>
+                
+                <div style="background: linear-gradient(135deg, #2b0c1b, #15050d); border: 1px solid rgba(255,215,0,0.3); border-radius:15px; padding:15px; margin:15px 0;">
+                    <span style="font-size: 1.6rem; font-weight: 700; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.4);">365+</span>
+                    <div style="font-size: 0.75rem; color: #ffccd5; font-weight: 600;">days of loving you 💛</div>
+                </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top: 15px;" onclick="goToSlide(0)">Relive from the start 🔄</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Music Toggle Logic ---
+        let isMusicPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggleBtn = document.getElementById('musicToggle');
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicToggleBtn.innerText = "🎵";
+                musicToggleBtn.style.background = "rgba(35, 12, 24, 0.8)";
+            } else {
+                bgMusic.play();
+                musicToggleBtn.innerText = "⏸️";
+                musicToggleBtn.style.background = "#ff2a5f";
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        // --- Swipe Gesture Logic for Mobile ---
+        let touchstartX = 0;
+        let touchendX = 0;
+        const appCard = document.getElementById('appCard');
+
+        appCard.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        appCard.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchendX < touchstartX - swipeThreshold) {
+                nextSlide();
+            }
+            if (touchendX > touchstartX + swipeThreshold) {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        }
+
+        // 1. GENERATE FLOATING HEARTS & DARK ROSES
+        const heartsContainer = document.getElementById('heartsContainer');
+        const heartIcons = ['🥀', '❤️‍🔥', '🖤', '💖', '✨', '🌹'];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            heart.style.fontSize = Math.random() * 12 + 14 + 'px';
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+        setInterval(createHeart, 400);
+
+        // 2. SLIDE NAVIGATION LOGIC
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dotsContainer');
+
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                dots[index].classList.remove('active');
+            });
+            
+            setTimeout(() => {
+                slides[currentSlide].classList.add('active');
+                dots[currentSlide].classList.add('active');
+            }, 50);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlides();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlides();
+        }
+
+        // 3. CORRECT ACCURATE REAL LIVE TIMER (From 30-07-2025 00:00:00)
+        function updateTimer() {
+            const startDate = new Date('2025-07-30T00:00:00');
+            const now = new Date();
+            let diff = now - startDate;
+
+            if (diff < 0) diff = 0; // Guard for future start
+
+            const seconds = Math.floor((diff / 1000) % 60);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+
+            // Exact Calendar Difference for Years, Months, and Days
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months -= 1;
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
+
+            document.getElementById('t-years').innerText = String(years).padStart(2, '0');
+            document.getElementById('t-months').innerText = String(months).padStart(2, '0');
+            document.getElementById('t-days').innerText = String(days).padStart(2, '0');
+            document.getElementById('t-hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('t-minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('t-seconds').innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // 4. CONFETTI EFFECT
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let confettiParticles = [];
+        let confettiAnimationId;
+
+        function createConfetti() {
+            const colors = ['#ff2a5f', '#ffd700', '#a4133c', '#ffccd5', '#800020'];
+            for (let i = 0; i < 120; i++) {
+                confettiParticles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2 + 50,
+                    r: Math.random() * 6 + 2,
+                    dx: Math.random() * 12 - 6,
+                    dy: Math.random() * -12 - 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.floor(Math.random() * 10) - 10,
+                    tiltAngleInc: (Math.random() * 0.07) + 0.05,
+                    tiltAngle: 0
+                });
+            }
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiParticles.forEach((p, index) => {
+                p.tiltAngle += p.tiltAngleInc;
+                p.y += (Math.cos(p.tiltAngle) + 1 + p.r / 2) / 2;
+                p.x += Math.sin(p.tiltAngle) * 2;
+                p.dy += 0.12;
+                p.y += p.dy;
+                p.x += p.dx;
+
+                ctx.beginPath();
+                ctx.lineWidth = p.r;
+                ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + p.r, p.y);
+                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r);
+                ctx.stroke();
+
+                if (p.y > canvas.height) {
+                    confettiParticles.splice(index, 1);
+                }
+            });
+
+            if (confettiParticles.length > 0) {
+                confettiAnimationId = requestAnimationFrame(drawConfetti);
+            } else {
+                cancelAnimationFrame(confettiAnimationId);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // 5. CANDLE BLOWING LOGIC
+        function blowCandle() {
+            const flame = document.getElementById('flame');
+            if (flame.style.display !== 'none') {
+                flame.style.display = 'none';
+                document.getElementById('candleStatus').innerText = "1 of 1 candles blown 🎉";
+                const btn = document.getElementById('cakeBtn');
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+                
+                createConfetti();
+                drawConfetti();
+                
+                if(!isMusicPlaying) {
+                    toggleMusic();
+                }
+            }
+        }
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
